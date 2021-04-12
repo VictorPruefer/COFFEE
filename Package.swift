@@ -7,7 +7,7 @@ let package = Package(
     name: "COFFEE",
     platforms: [
         .iOS(.v13),
-        .macOS(.v10_15)
+        .macOS(.v11)
     ],
     products: [
         .library(
@@ -15,12 +15,14 @@ let package = Package(
             targets: ["COFFEE"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/spacenation/swiftui-sliders", from: "1.0.0")
+        .package(name: "Sliders", url: "https://github.com/spacenation/swiftui-sliders", from: "1.0.0")
     ],
     targets: [
         .target(
             name: "COFFEE",
-            dependencies: []),
+            dependencies: [.product(name: "Sliders", package: "Sliders")],
+            resources: [.copy("Mock")]
+        ),
         .testTarget(
             name: "COFFEETests",
             dependencies: ["COFFEE"]),

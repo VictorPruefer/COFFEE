@@ -1,11 +1,13 @@
 //
 //  TakeSurveyScreen.swift
-//  comf.io
+//  COFFEE
 //
-//  Created by Vico on 22.02.21.
+//  Created by Victor Prüfer on 22.02.21.
 //
 
 import SwiftUI
+
+#if !os(macOS)
 
 /// A screen presenting a given survey
 struct TakeSurveyScreen: View {
@@ -155,3 +157,5 @@ extension TakeSurveyScreen {
         }
     }
 }
+
+#endif

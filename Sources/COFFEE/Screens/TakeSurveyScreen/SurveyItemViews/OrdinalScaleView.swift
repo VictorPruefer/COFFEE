@@ -1,9 +1,11 @@
 //
 //  OrdinalScaleView.swift
-//  comf.io
+//  COFFEE
 //
-//  Created by Vico on 22.02.21.
+//  Created by Victor Prüfer on 22.02.21.
 //
+
+#if !os(macOS)
 
 import SwiftUI
 
@@ -66,3 +68,5 @@ struct OrdinalScaleView: View {
         }
     }
 }
+
+#endif

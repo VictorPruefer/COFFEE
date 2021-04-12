@@ -1,9 +1,11 @@
 //
 //  TextPickerView.swift
-//  comf.io
+//  COFFEE
 //
-//  Created by Vico on 02.03.21.
+//  Created by Victor Prüfer on 02.03.21.
 //
+
+#if !os(macOS)
 
 import SwiftUI
 import CoreLocation
@@ -108,3 +110,5 @@ struct LocationPickerView: View {
         }
     }
 }
+
+#endif

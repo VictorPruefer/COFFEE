@@ -1,9 +1,11 @@
 //
 //  SurveyOverviewScreen.swift
-//  comf.io
+//  COFFEE
 //
-//  Created by Vico on 21.02.21.
+//  Created by Victor Prüfer on 21.02.21.
 //
+
+#if !os(macOS)
 
 import SwiftUI
 
@@ -29,7 +31,7 @@ public struct SurveyOverviewScreen: View {
         return dateFormatter
     }()
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             // Stack for upper part (title + info scrollview)
             VStack(alignment: .leading, spacing: 12) {
@@ -151,3 +153,5 @@ public struct SurveyOverviewScreen: View {
         .navigationBarTitle("")
     }
 }
+
+#endif

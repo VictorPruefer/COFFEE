@@ -1,9 +1,11 @@
 //
 //  SurveyItemView.swift
-//  comf.io
+//  COFFEE
 //
-//  Created by Vico on 23.02.21.
+//  Created by Victor Prüfer on 23.02.21.
 //
+
+#if !os(macOS)
 
 import SwiftUI
 
@@ -84,3 +86,4 @@ struct SurveyItemView: View {
     }
 }
 
+#endif
