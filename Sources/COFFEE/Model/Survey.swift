@@ -120,6 +120,11 @@ public struct Survey: Codable {
 
 /// Research conductor
 public struct Researcher: Codable {
-    var name: String
-    var mail: String
+    public var name: String
+    public var mail: String
+    
+    public init(name: String, mail: String) {
+        self.name = name
+        self.mail = mail
+    }
 }
