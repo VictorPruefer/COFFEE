@@ -11,7 +11,7 @@ import Foundation
 public class MockProvider {
     
     /// Returns multiple mock surveys
-    static func getMultipleSurveys() -> [Survey] {
+    public static func getMultipleSurveys() -> [Survey] {
         // Decode json with mock surveys
         guard let decodedMockSurvey = Self.parseMockData() else {
             return []
@@ -20,7 +20,7 @@ public class MockProvider {
     }
     
     /// Returns a signle mock survey
-    static func getSingleSurvey() -> Survey {
+    public static func getSingleSurvey() -> Survey {
         return getMultipleSurveys()[3]
     }
     

@@ -5,6 +5,8 @@
 //  Created by Victor Prüfer on 02.03.21.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 extension UIColor {
@@ -57,3 +59,5 @@ extension UIColor {
         return self
     }
 }
+
+#endif
