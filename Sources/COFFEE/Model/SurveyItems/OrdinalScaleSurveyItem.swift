@@ -23,7 +23,7 @@ public struct OrdinalScaleSurveyItem: SurveyItem, Codable {
     /// Specify at least two steps to define the scale's range
     public let ordinalScaleSteps: [OrdinalScaleStep]
     
-    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, isScaleContinous: Bool, ordinalScaleSteps: [OrdinalScaleStep]) {
+    public init(type: SurveyItemType = .ordinalScale, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, isScaleContinous: Bool, ordinalScaleSteps: [OrdinalScaleStep]) {
         self.type = type
         self.identifier = identifier
         self.question = question

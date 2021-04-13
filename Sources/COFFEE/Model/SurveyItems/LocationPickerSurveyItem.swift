@@ -17,7 +17,7 @@ public struct LocationPickerSurveyItem: SurveyItem, Codable {
     public let isOptional: Bool
     public let scaleTitle: String?
     
-    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?) {
+    public init(type: SurveyItemType = .locationPicker, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?) {
         self.type = type
         self.identifier = identifier
         self.question = question

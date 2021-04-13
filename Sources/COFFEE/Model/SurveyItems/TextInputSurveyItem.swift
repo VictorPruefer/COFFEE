@@ -20,7 +20,7 @@ public struct TextInputSurveyItem: SurveyItem, Codable {
     // Additional attributes for item type "TextInput"
     public let image: String?
     
-    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, image: String?) {
+    public init(type: SurveyItemType = .textInput, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, image: String?) {
         self.type = type
         self.identifier = identifier
         self.question = question

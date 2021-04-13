@@ -68,7 +68,7 @@ public struct Survey: Codable {
     }
     
     /// Memberwise initializer
-    public init(title: String, description: String, researcher: Researcher, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem] = [], color: String, reminders: [Reminder]) {
+    public init(title: String, description: String, researcher: Researcher, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem], color: String, reminders: [Reminder] = []) {
         self.title = title
         self.description = description
         self.researcher = researcher

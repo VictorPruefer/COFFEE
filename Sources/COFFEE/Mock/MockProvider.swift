@@ -19,7 +19,7 @@ public class MockProvider {
         return decodedMockSurvey
     }
     
-    /// Returns a signle mock survey
+    /// Returns a single mock survey
     public static func getSingleSurvey() -> Survey {
         return getMultipleSurveys()[3]
     }

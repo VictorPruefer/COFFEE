@@ -21,7 +21,7 @@ public struct NominalScaleSurveyItem: SurveyItem, Codable {
     /// Specify a set of available options
     public let nominalScaleSteps: [NominalScaleStep]
     
-    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, nominalScaleSteps: [NominalScaleStep]) {
+    public init(type: SurveyItemType = .nominalScale, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, nominalScaleSteps: [NominalScaleStep]) {
         self.type = type
         self.identifier = identifier
         self.question = question

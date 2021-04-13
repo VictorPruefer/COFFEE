@@ -21,7 +21,7 @@ public struct MultipleChoiceSurveyItem: SurveyItem, Codable {
     /// Specify a set of available options
     public let multipleChoiceOptions: [MultipleChoiceOption]
     
-    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, multipleChoiceOptions: [MultipleChoiceOption]) {
+    public init(type: SurveyItemType = .multipleChoice, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, multipleChoiceOptions: [MultipleChoiceOption]) {
         self.type = type
         self.identifier = identifier
         self.question = question
