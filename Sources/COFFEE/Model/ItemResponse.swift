@@ -60,10 +60,10 @@ extension ItemResponse: CustomStringConvertible {
         } else if let responseMultipleChoice = responseMultipleChoice {
             return "Selected multiple choice options in question <\(surveyItemID)>: \(responseMultipleChoice)"
         } else if let responseLocationPickerLongitude = responseLocationPickerLongitude, let responseLocationPickerLatitude = responseLocationPickerLatitude {
-            return "Shared coordinates in item <\(surveyItemID)>: \(responseLocationPickerLongitude), \(responseLocationPickerLatitude)"
+            return "Shared coordinates in question <\(surveyItemID)>: \(responseLocationPickerLongitude), \(responseLocationPickerLatitude)"
         } else if let responseTextInput = responseTextInput {
-            return "Text response in item <\(surveyItemID)>: \(responseTextInput)"
+            return "Text response in question <\(surveyItemID)>: \(responseTextInput)"
         }
-        return "Unknow response"
+        return "Unknown or invalid response in question <\(surveyItemID)>"
     }
 }
