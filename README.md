@@ -46,7 +46,7 @@ struct ContentView: View {
 COFFEE comes with a variety of different item types. An item type describes the input type and the UI component of a question. The following taxonomy shows the currently available item types.
 
 <center>
-<img src="Sources/COFFEE/Resources/ItemTaxonomy.jpg"/>
+<img src="Sources/COFFEE/Resources/SurveyItemTaxonomy.jpg"/>
 </center>
 
 <table>
