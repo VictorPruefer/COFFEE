@@ -17,6 +17,11 @@ public struct SurveyOverviewScreen: View {
     /// A completion handler that is called after the respondent completes the survey
     public var completionHandler: ((Submission) -> ())?
     
+    public init(survey: Survey, completionHandler: ((Submission) -> ())?) {
+        self.survey = survey
+        self.completionHandler = completionHandler
+    }
+    
     // Temporary placeholder for reminder toggle
     @State var isOn: Bool = true
     
