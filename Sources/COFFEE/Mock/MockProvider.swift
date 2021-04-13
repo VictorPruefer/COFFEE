@@ -26,7 +26,7 @@ public class MockProvider {
     
     // Parses mock survey from a local json file
     static private func parseMockData() -> [Survey]? {
-        guard let url = Bundle.main.url(forResource: "MockSurveys", withExtension: "json"),
+        guard let url = Bundle.module.url(forResource: "MockSurveys", withExtension: "json"),
               let data = try? Data(contentsOf: url) else {
             return nil
         }
