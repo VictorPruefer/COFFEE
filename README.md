@@ -49,15 +49,26 @@ COFFEE comes with a variety of different item types. An item type describes the 
 <img src="Sources/COFFEE/Resources/ItemTaxonomy.jpg"/>
 </center>
 
-
-| Item Type | Swift Object | JSON type indentifier | Description |
-| ---- | ---- | ---- | ---- |
-| Ordinal Scale | `OrdinalScaleSurveyItem` | `ordinalScale` | This item is supposed to be used for all questions that require a numeric scale such as the ASHRAE 7-point thermal sensation scale. Use `OrdinalScaleStep` to define the scale's steps. |
-| Nominal Scale | `NominalScaleSurveyItem` | `nominalScale` | This item can be used whenever you have a set of options and you want to let the respondent choose one. |
-| Multiple Choice | `MultipleChoiceSurveyItem` | `multipleChoice` | This item can be used to let the respondent pick multiple items from a set of options. |
-| Location Picker | `LocationPickerSurveyItem` | `locationPicker` | This item requests the respondent's location. Note that if you wish to use this item, you need to add the `NSLocationWhenInUseUsageDescription` key to your projects `Info.plist` file. |
-| Text Input | `TextInputSurveyItem` | `textInput` | This item lets the respondent enter any text. |
-
+<table>
+  <tr>
+    <th>Item Type</th><th>JSON Type Identifier</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>OrdinalScaleSurveyItem</td><td>ordinalScale</td><td>This item is supposed to be used for all questions that require a numeric scale such as the ASHRAE 7-point thermal sensation scale. Use `OrdinalScaleStep` to define the scale's steps.</td>
+  </tr>
+  <tr>
+    <td>NominalScaleSurveyItem</td><td>nominalScale</td><td>This item can be used whenever you have a set of options and you want to let the respondent choose one.</td>
+  </tr>
+  <tr>
+    <td>MultipleChoiceSurveyItem</td><td>multipleChoice</td><td>This item can be used to let the respondent pick multiple items from a set of options.</td>
+  </tr>
+  <tr>
+    <td>LocationPickerSurveyItem</td><td>locationPicker</td><td>This item requests the respondent's location. Note that if you wish to use this item, you need to add the `NSLocationWhenInUseUsageDescription` key to your projects `Info.plist` file.</td>
+  </tr>
+  <tr>
+    <td>TextInputSurveyItem</td><td>textInput</td><td>This item lets the respondent enter any text.</td>
+  </tr>
+</table>
 
 ## JSON En- and Decoding
 
