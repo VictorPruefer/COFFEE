@@ -76,14 +76,60 @@ You can either specify your survey by instanciating it in the code or by decodin
 
 ### Decode Survey from JSON
 
-Prepare a JSON file that contains the survey that you wish to present. Example:
+Prepare a JSON file that contains the survey that you wish to present. Example `MockSurvey.json`:
 ```json
-...
+{
+    "title": "...",
+    "description": "...",
+    "researcher": {
+        "name": "...",
+        "mail": "...",
+    },
+    "allowsMultipleSubmissions": true,
+    "startDate": "2021-04-08T15:00:00Z",
+    "endDate": "2021-04-25T20:00:00Z",
+    "color": "...",
+    "items": [
+        {
+            "type": "ordinalScale",
+            "identifier": "...",
+            "question": "...",
+            "description": "...",
+            "isOptional": false,
+            "scaleTitle": "...",
+            "isScaleContinous": false,
+            "ordinalScaleSteps": [
+                {
+                    "value": 3,
+                    "label": "Very hot",
+                    "color": "c7520e"
+                },
+                ...
+            ]
+        }
+    ],
+    "reminders": []
+}
+
 ```
 
 Decode the JSON survey.
 ```swift
-...
+func decodeJSONSurvey() -> Survey? {
+    guard let url = Bundle.main.url(forResource: "MockSurvey", withExtension: "json"),
+          let data = try? Data(contentsOf: url) else {
+        return nil
+    }
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601;
+    do {
+        let decodedSurvey = try decoder.decode(Survey.self, from: data)
+        return decodedSurvey
+    } catch let error {
+        print(error)
+    }
+    return nil
+}
 ```
 
 ### Encode Submission to JSON
