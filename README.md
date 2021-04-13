@@ -1,7 +1,6 @@
 # COFFEE
 COFFEE - Customizable Occupant-Friendly FEEdback applications. COFFEE is a lightweight, flexible and extensible SwiftUI framework to build customizable feedback applications for thermal comfort and IEQ research.
 
-## Overview
 ## How to use
 
 Add this swift package to your Xcode project
@@ -41,3 +40,11 @@ struct ContentView: View {
     }
 }
 ```
+
+## Item Types
+
+COFFEE comes with a variety of different item types. An item type describes the input type and the UI component of a question.
+
+<center>
+<img src="COFFEE/Resources/ItemTaxonomy.jpg"/>
+</center>
