@@ -21,7 +21,7 @@ let package = Package(
         .target(
             name: "COFFEE",
             dependencies: [.product(name: "Sliders", package: "Sliders")],
-            resources: [.copy("Mock")]
+            resources: [.copy("Mock/Resources")]
         ),
         .testTarget(
             name: "COFFEETests",
