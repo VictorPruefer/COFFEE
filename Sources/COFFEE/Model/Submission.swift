@@ -12,3 +12,12 @@ public struct Submission: Codable {
     public let submissionDate: Date
     public let responses: [ItemResponse]
 }
+
+extension Submission: CustomStringConvertible {
+    
+    public var description: String {
+        let responsesString = responses.map({ $0.description }).joined(separator: "\n")
+        return "Submission at \(submissionDate.description):\n" + responsesString
+    }
+    
+}

@@ -49,3 +49,21 @@ public class ItemResponse: Codable, ObservableObject {
         }
     }
 }
+
+/// Make item respone printable on console
+extension ItemResponse: CustomStringConvertible {
+    public var description: String {
+        if let responseOrdinalScale = responseOrdinalScale {
+            return "Selection on ordinal scale in question <\(surveyItemID)>: \(responseOrdinalScale)"
+        } else if let responseNominalScale = responseNominalScale {
+            return "Selection on nominal scale in question <\(surveyItemID)>: \(responseNominalScale)"
+        } else if let responseMultipleChoice = responseMultipleChoice {
+            return "Selected multiple choice options in question <\(surveyItemID)>: \(responseMultipleChoice)"
+        } else if let responseLocationPickerLongitude = responseLocationPickerLongitude, let responseLocationPickerLatitude = responseLocationPickerLatitude {
+            return "Shared coordinates in item <\(surveyItemID)>: \(responseLocationPickerLongitude), \(responseLocationPickerLatitude)"
+        } else if let responseTextInput = responseTextInput {
+            return "Text response in item <\(surveyItemID)>: \(responseTextInput)"
+        }
+        return "Unknow response"
+    }
+}
