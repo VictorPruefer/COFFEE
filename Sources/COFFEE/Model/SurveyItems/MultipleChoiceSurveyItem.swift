@@ -20,6 +20,16 @@ public struct MultipleChoiceSurveyItem: SurveyItem, Codable {
     // Additional attributes for item type "MultipleChoice"
     /// Specify a set of available options
     public let multipleChoiceOptions: [MultipleChoiceOption]
+    
+    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, multipleChoiceOptions: [MultipleChoiceOption]) {
+        self.type = type
+        self.identifier = identifier
+        self.question = question
+        self.description = description
+        self.isOptional = isOptional
+        self.scaleTitle = scaleTitle
+        self.multipleChoiceOptions = multipleChoiceOptions
+    }
 }
 
 /// One multiple choice option
@@ -28,4 +38,9 @@ public struct MultipleChoiceOption: Codable {
     public let value: Int
     /// Human-readable description of the option
     public let label: String
+    
+    public init(value: Int, label: String) {
+        self.value = value
+        self.label = label
+    }
 }

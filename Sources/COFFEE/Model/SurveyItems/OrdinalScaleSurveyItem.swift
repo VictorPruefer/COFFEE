@@ -22,6 +22,17 @@ public struct OrdinalScaleSurveyItem: SurveyItem, Codable {
     public let isScaleContinous: Bool
     /// Specify at least two steps to define the scale's range
     public let ordinalScaleSteps: [OrdinalScaleStep]
+    
+    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, isScaleContinous: Bool, ordinalScaleSteps: [OrdinalScaleStep]) {
+        self.type = type
+        self.identifier = identifier
+        self.question = question
+        self.description = description
+        self.isOptional = isOptional
+        self.scaleTitle = scaleTitle
+        self.isScaleContinous = isScaleContinous
+        self.ordinalScaleSteps = ordinalScaleSteps
+    }
 }
 
 /// A single step on an ordinal scale
@@ -32,4 +43,10 @@ public struct OrdinalScaleStep: Codable {
     public let label: String
     /// A color in hex-format
     public let color: String
+    
+    public init(value: Double, label: String, color: String) {
+        self.value = value
+        self.label = label
+        self.color = color
+    }
 }

@@ -67,6 +67,19 @@ public struct Survey: Codable {
         }
     }
     
+    /// Memberwise initializer
+    public init(title: String, description: String, researcher: Researcher, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem] = [], color: String, reminders: [Reminder]) {
+        self.title = title
+        self.description = description
+        self.researcher = researcher
+        self.allowsMultipleSubmissions = allowsMultipleSubmissions
+        self.startDate = startDate
+        self.endDate = endDate
+        self.items = items
+        self.color = color
+        self.reminders = reminders
+    }
+    
     /// Creates a new instance of survey from a decoder
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

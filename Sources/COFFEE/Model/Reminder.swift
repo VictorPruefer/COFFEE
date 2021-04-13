@@ -21,6 +21,16 @@ public struct Reminder: Codable {
     public let interval: Int? // in minutes
     // Additional attributes for type 'locationChange'
     public let threshold: Int? // in meters
+    
+    public init(type: ReminderType, description: String, date: Date?, startTime: Date?, endTime: Date?, interval: Int?, threshold: Int?) {
+        self.type = type
+        self.description = description
+        self.date = date
+        self.startTime = startTime
+        self.endTime = endTime
+        self.interval = interval
+        self.threshold = threshold
+    }
 }
     
 

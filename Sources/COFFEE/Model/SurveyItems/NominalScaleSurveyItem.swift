@@ -20,6 +20,16 @@ public struct NominalScaleSurveyItem: SurveyItem, Codable {
     // Additional attributes for item type "NominalScale"
     /// Specify a set of available options
     public let nominalScaleSteps: [NominalScaleStep]
+    
+    public init(type: SurveyItemType, identifier: String, question: String, description: String, isOptional: Bool, scaleTitle: String?, nominalScaleSteps: [NominalScaleStep]) {
+        self.type = type
+        self.identifier = identifier
+        self.question = question
+        self.description = description
+        self.isOptional = isOptional
+        self.scaleTitle = scaleTitle
+        self.nominalScaleSteps = nominalScaleSteps
+    }
 }
 
 /// One step on a nominal scale
@@ -28,4 +38,9 @@ public struct NominalScaleStep: Codable {
     public let value: Int
     /// Human-readable description of the step
     public let label: String
+    
+    public init(value: Int, label: String) {
+        self.value = value
+        self.label = label
+    }
 }
