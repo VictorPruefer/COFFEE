@@ -3,12 +3,22 @@ COFFEE - Customizable Occupant-Friendly FEEdback applications. COFFEE is a light
 
 ## How to use
 
-Add this swift package to your Xcode project.
+### Add Swift Package to Xcode Project
+1. Create a new iOS application project in Xcode, set language to Swift and interface to SwiftUI.
+2. Add the COFFEE swift package to your project by copying the link below and following the steps in the image
 ```
 https://github.com/VictorPruefer/COFFEE
 ```
+<center>
+<img src="Sources/COFFEE/Resources/AddPackageInstructions.jpg"/>
+</center>
 
-Import package, provide survey to display and completion handler to handle the submission after respondent completes survey.
+### Setup Survey and Display it
+In order to use COFFEE and to display your custom survey, you need to provide two things:
+- An instance of `Survey`: The survey that you want to display
+- A completion handler that takes a `Submission` as parameter. COFFEE calls this function once the respondent completes the survey. The submission contains all responses and other meta data such as the submission date and time.
+
+You can copy the following code snippet into your `ContentView` as a starting point. It already provides the completion handler and outlines the creation of a survey.
 
 ```swift
 import SwiftUI
