@@ -28,7 +28,7 @@ struct ContentView: View {
    
    // Specify the survey that you want to present
    let survey: Survey = {
-       // Specify survey items / questions. For each question, pick an item type that fits best (see section 'Item Types')
+       // TODO: Specify survey items / questions. For each question, pick an item type that fits best (see section 'Item Types')
        let question1 = ...SurveyItem(...)
        let question2 = ...SurveyItem(...)
        
@@ -61,7 +61,7 @@ For each question that you want to add to your survey, you need to instantiate a
 The following taxonomy shows the currently available item types..
 
 <center>
-<img src="Sources/COFFEE/Resources/SurveyItemTaxonomy.jpg"/>
+<img src="Sources/COFFEE/Resources/ItemTaxonomy.jpg"/>
 </center>
 
 <table>
@@ -78,7 +78,7 @@ The following taxonomy shows the currently available item types..
     <td>MultipleChoiceSurveyItem</td><td>multipleChoice</td><td>This item can be used to let the respondent pick multiple items from a set of options.</td>
   </tr>
   <tr>
-    <td>LocationPickerSurveyItem</td><td>locationPicker</td><td>This item requests the respondent's location. Note that if you wish to use this item, you need to add the `NSLocationWhenInUseUsageDescription` key to your project's `Info.plist` file.</td>
+    <td>LocationPickerSurveyItem</td><td>locationPicker</td><td>This item requests the respondent's location. Note that if you wish to use this item, you need to add the `Privacy - Location When In Use Usage Description` key to your project's `Info.plist` file.</td>
   </tr>
   <tr>
     <td>TextInputSurveyItem</td><td>textInput</td><td>This item lets the respondent enter any text to respond to the question.</td>
