@@ -28,14 +28,13 @@ struct ContentView: View {
    
    // Specify the survey that you want to present
    let survey: Survey = {
-       // Specify survey items, one item for each question
+       // Specify survey items / questions
        let question1 = ...SurveyItem(...)
        let question2 = ...SurveyItem(...)
        
-       // Create survey and add all items
-       let survey = Survey(title: "Survey Title", description: "Survey Description", researcher: Researcher(name: "Vico", mail: "vico@mail.de"), allowsMultipleSubmissions: true, startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, items: [question1, question2], color: "42a7f5")
+       // Create survey and add all question items
+       let survey = Survey(title: "Survey Title", description: "Survey Description", allowsMultipleSubmissions: true, startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, items: [question1, question2], color: "42a7f5")
        
-       // Return survey
        return survey
     }()
    

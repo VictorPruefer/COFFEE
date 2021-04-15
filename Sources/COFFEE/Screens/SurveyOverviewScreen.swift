@@ -100,32 +100,34 @@ public struct SurveyOverviewScreen: View {
                         Text(survey.description)
                             .padding(.horizontal)
                         
-                        // Reminder headline
-                        Text("Reminders".uppercased())
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .padding([.horizontal, .top])
-                        
-                        // When to take this survey / reminders for this survey
-                        VStack(alignment: .leading, spacing: 8, content: {
-                            ForEach(survey.reminders.indices, id: \.self) { index in
-                                Toggle(isOn: $isOn, label: {
-                                    switch survey.reminders[index].type {
-                                        case .dateTime:
-                                            Image(systemName: "calendar")
-                                        case .interval:
-                                            Image(systemName: "repeat")
-                                        case .locationChange:
-                                            Image(systemName: "location")
-                                    }
-                                    Text(survey.reminders[index].description)
-                                })
+                        // Reminders section
+                        if !survey.reminders.isEmpty {
+                            Text("Reminders".uppercased())
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .padding([.horizontal, .top])
+                            
+                            // When to take this survey / reminders for this survey
+                            VStack(alignment: .leading, spacing: 8, content: {
+                                ForEach(survey.reminders.indices, id: \.self) { index in
+                                    Toggle(isOn: $isOn, label: {
+                                        switch survey.reminders[index].type {
+                                            case .dateTime:
+                                                Image(systemName: "calendar")
+                                            case .interval:
+                                                Image(systemName: "repeat")
+                                            case .locationChange:
+                                                Image(systemName: "location")
+                                        }
+                                        Text(survey.reminders[index].description)
+                                    })
                                     .padding(.vertical, 8)
                                     .padding(.horizontal, 12)
                                     .background(Color(.systemGray5))
                                     .cornerRadius(6)
-                            }
-                        }).padding(.horizontal)
+                                }
+                            }).padding(.horizontal)
+                        }
                     }
                 }
             }
