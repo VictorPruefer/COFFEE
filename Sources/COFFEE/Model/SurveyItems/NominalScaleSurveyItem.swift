@@ -39,8 +39,8 @@ public struct NominalScaleStep: Codable {
     /// Human-readable description of the step
     public let label: String
     
-    public init(value: Int, label: String) {
-        self.identifier = value
+    public init(identifier: Int, label: String) {
+        self.identifier = identifier
         self.label = label
     }
 }
