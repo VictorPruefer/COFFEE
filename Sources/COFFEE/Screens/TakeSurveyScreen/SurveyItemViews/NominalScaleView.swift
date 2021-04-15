@@ -20,7 +20,7 @@ struct NominalScaleView: View {
             Button(action: { viewModel.selectStep(stepIndex: stepIndex) }, label: {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center, spacing: 6) {
-                        Image(systemName: surveyViewModel.currentItemResponse?.responseNominalScale == viewModel.steps[stepIndex].value ? "circle.fill" : "circle").font(.callout)
+                        Image(systemName: surveyViewModel.currentItemResponse?.responseNominalScale == viewModel.steps[stepIndex].identifier ? "circle.fill" : "circle").font(.callout)
                             .foregroundColor(Color(.systemGray2))
                         Text(viewModel.steps[stepIndex].label)
                             .font(.callout)
@@ -30,7 +30,7 @@ struct NominalScaleView: View {
                 }.padding(.leading, 8)
                 .padding(.trailing)
                 .padding(.vertical, 12)
-                .background(Color(surveyViewModel.currentItemResponse?.responseNominalScale == viewModel.steps[stepIndex].value ? .systemGray3 : .systemGray5))
+                .background(Color(surveyViewModel.currentItemResponse?.responseNominalScale == viewModel.steps[stepIndex].identifier ? .systemGray3 : .systemGray5))
                 .cornerRadius(6)
                 .padding(.bottom, 4)
             })
@@ -55,12 +55,12 @@ struct NominalScaleView: View {
         
         // User tapped on one item
         func selectStep(stepIndex: Int) {
-            if surveyViewModel.currentItemResponse?.responseNominalScale == steps[stepIndex].value {
+            if surveyViewModel.currentItemResponse?.responseNominalScale == steps[stepIndex].identifier {
                 // If the new selection is already selected, toggle it
                 surveyViewModel.currentItemResponse?.responseNominalScale = nil
             } else {
                 // Otherwise, update the item response to reflect the current selection
-                surveyViewModel.currentItemResponse?.responseNominalScale = steps[stepIndex].value
+                surveyViewModel.currentItemResponse?.responseNominalScale = steps[stepIndex].identifier
             }
             // Notify the view that changes occurred
             objectWillChange.send()

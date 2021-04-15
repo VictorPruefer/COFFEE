@@ -35,12 +35,12 @@ public struct NominalScaleSurveyItem: SurveyItem, Codable {
 /// One step on a nominal scale
 public struct NominalScaleStep: Codable {
     /// A unique numeric value for identification purposes
-    public let value: Int
+    public let identifier: Int
     /// Human-readable description of the step
     public let label: String
     
     public init(value: Int, label: String) {
-        self.value = value
+        self.identifier = value
         self.label = label
     }
 }

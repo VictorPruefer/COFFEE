@@ -211,23 +211,23 @@
                 "scaleTitle": "Nominal Scale",
                 "nominalScaleSteps": [
                     {
-                        "value": 0,
+                        "identifier": 0,
                         "label": "Physical work"
                     },
                     {
-                        "value": 1,
+                        "identifier": 1,
                         "label": "Relaxing, not working at all"
                     },
                     {
-                        "value": 2,
+                        "identifier": 2,
                         "label": "Studying"
                     },
                     {
-                        "value": 3,
+                        "identifier": 3,
                         "label": "Working on the computer"
                     },
                     {
-                        "value": 4,
+                        "identifier": 4,
                         "label": "I've been doing sports"
                     }
                 ]
@@ -437,23 +437,23 @@
                 "scaleTitle": "Nominal Scale",
                 "nominalScaleSteps": [
                     {
-                        "value": 0,
+                        "identifier": 0,
                         "label": "Physical work"
                     },
                     {
-                        "value": 1,
+                        "identifier": 1,
                         "label": "Relaxing, not working at all"
                     },
                     {
-                        "value": 2,
+                        "identifier": 2,
                         "label": "Studying"
                     },
                     {
-                        "value": 3,
+                        "identifier": 3,
                         "label": "Working on the computer"
                     },
                     {
-                        "value": 4,
+                        "identifier": 4,
                         "label": "I've been doing sports"
                     }
                 ]
@@ -663,23 +663,23 @@
                 "scaleTitle": "Nominal Scale",
                 "nominalScaleSteps": [
                     {
-                        "value": 0,
+                        "identifier": 0,
                         "label": "Physical work"
                     },
                     {
-                        "value": 1,
+                        "identifier": 1,
                         "label": "Relaxing, not working at all"
                     },
                     {
-                        "value": 2,
+                        "identifier": 2,
                         "label": "Studying"
                     },
                     {
-                        "value": 3,
+                        "identifier": 3,
                         "label": "Working on the computer"
                     },
                     {
-                        "value": 4,
+                        "identifier": 4,
                         "label": "I've been doing sports"
                     }
                 ]
@@ -889,23 +889,23 @@
                 "scaleTitle": "Nominal Scale",
                 "nominalScaleSteps": [
                     {
-                        "value": 0,
+                        "identifier": 0,
                         "label": "Physical work"
                     },
                     {
-                        "value": 1,
+                        "identifier": 1,
                         "label": "Relaxing, not working at all"
                     },
                     {
-                        "value": 2,
+                        "identifier": 2,
                         "label": "Studying"
                     },
                     {
-                        "value": 3,
+                        "identifier": 3,
                         "label": "Working on the computer"
                     },
                     {
-                        "value": 4,
+                        "identifier": 4,
                         "label": "I've been doing sports"
                     }
                 ]

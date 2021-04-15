@@ -14,7 +14,7 @@ https://github.com/VictorPruefer/COFFEE
 </center>
 
 ### Setup Survey and Display it
-In order to use COFFEE and to display your custom survey, you need to provide two things:
+In order to use COFFEE and to display your custom survey, you need to embed `SurveyOverviewScreen` in your SwiftUI view, which takes two arguments:
 - An instance of `Survey`: The survey that you want to display
 - A completion handler that takes a `Submission` as parameter. COFFEE calls this function once the respondent completes the survey. The submission contains all responses and other meta data such as the submission date and time.
 
@@ -28,7 +28,7 @@ struct ContentView: View {
    
    // Specify the survey that you want to present
    let survey: Survey = {
-       // Specify survey items / questions
+       // Specify survey items / questions. For each question, pick an item type that fits best (see section 'Item Types')
        let question1 = ...SurveyItem(...)
        let question2 = ...SurveyItem(...)
        
@@ -54,7 +54,11 @@ struct ContentView: View {
 
 ## Item Types
 
-COFFEE comes with a variety of different item types. An item type describes the input type and the UI component of a question. The following taxonomy shows the currently available item types.
+For each question that you want to add to your survey, you need to instantiate a survey item. COFFEE comes with a variety of different item types, so you can choose the one that fits best to your question type. An item type describes the input type and the UI component of a question. 
+
+*Example:* If you wish to let the respondent answer a question by entering text, you should use the `TextInputSurveyItem`. If the respondent should respond on a numeric scale, the `OrdinalScaleSurveyItem` is the right choice.
+
+The following taxonomy shows the currently available item types..
 
 <center>
 <img src="Sources/COFFEE/Resources/SurveyItemTaxonomy.jpg"/>
@@ -65,19 +69,19 @@ COFFEE comes with a variety of different item types. An item type describes the 
     <th>Item Type</th><th>JSON Type Identifier</th><th>Description</th>
   </tr>
   <tr>
-    <td>OrdinalScaleSurveyItem</td><td>ordinalScale</td><td>This item is supposed to be used for all questions that require a numeric scale such as the ASHRAE 7-point thermal sensation scale. Use `OrdinalScaleStep` to define the scale's steps.</td>
+    <td>OrdinalScaleSurveyItem</td><td>ordinalScale</td><td>Use this item if you want to display a numeric scale. Both discrete and continous scales are supported. You can specify the scale steps and associate each of them with a value and color.</td>
   </tr>
   <tr>
-    <td>NominalScaleSurveyItem</td><td>nominalScale</td><td>This item can be used whenever you have a set of options and you want to let the respondent choose one.</td>
+    <td>NominalScaleSurveyItem</td><td>nominalScale</td><td>This item can be used whenever you have a set of options and you want to let the respondent pick one. In contrast to the ordinal scale, the steps do not have a numeric value or color associated.</td>
   </tr>
   <tr>
     <td>MultipleChoiceSurveyItem</td><td>multipleChoice</td><td>This item can be used to let the respondent pick multiple items from a set of options.</td>
   </tr>
   <tr>
-    <td>LocationPickerSurveyItem</td><td>locationPicker</td><td>This item requests the respondent's location. Note that if you wish to use this item, you need to add the `NSLocationWhenInUseUsageDescription` key to your projects `Info.plist` file.</td>
+    <td>LocationPickerSurveyItem</td><td>locationPicker</td><td>This item requests the respondent's location. Note that if you wish to use this item, you need to add the `NSLocationWhenInUseUsageDescription` key to your project's `Info.plist` file.</td>
   </tr>
   <tr>
-    <td>TextInputSurveyItem</td><td>textInput</td><td>This item lets the respondent enter any text.</td>
+    <td>TextInputSurveyItem</td><td>textInput</td><td>This item lets the respondent enter any text to respond to the question.</td>
   </tr>
 </table>
 
