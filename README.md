@@ -30,9 +30,10 @@ struct ContentView: View {
    let survey: Survey = {
        // Specify survey items, one item for each question
        let question1 = ...SurveyItem(...)
+       let question2 = ...SurveyItem(...)
        
        // Create survey and add all items
-       let survey = Survey(...)
+       let survey = Survey(title: "Survey Title", description: "Survey Description", researcher: Researcher(name: "Vico", mail: "vico@mail.de"), allowsMultipleSubmissions: true, startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, items: [question1, question2], color: "42a7f5")
        
        // Return survey
        return survey
@@ -41,6 +42,7 @@ struct ContentView: View {
     // Handle submission after the respondent completes survey
     func didCompleteSurvey(submission: Submission) {
        // Process submission
+       print(submission)
     }
     
     var body: some View {

@@ -64,12 +64,13 @@ public struct SurveyOverviewScreen: View {
                             .padding(.horizontal)
                         
                         // Research conductor
-                        // Timespan of the survey
-                        HStack {
-                            Image(systemName: "person")
-                                .frame(width: 30)
-                            Text(survey.researcher.name)
-                        }.padding(.horizontal)
+                        if let researcher = survey.researcher {
+                            HStack {
+                                Image(systemName: "person")
+                                    .frame(width: 30)
+                                Text(researcher.name)
+                            }.padding(.horizontal)
+                        }
                         
                         // Timespan of the survey
                         HStack(alignment: .top) {

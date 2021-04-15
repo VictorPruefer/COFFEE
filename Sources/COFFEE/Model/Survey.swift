@@ -10,7 +10,7 @@ import Foundation
 public struct Survey: Codable {
     public let title: String
     public let description: String
-    public var researcher: Researcher
+    public var researcher: Researcher?
     public let allowsMultipleSubmissions: Bool
     public let startDate: Date
     public let endDate: Date
@@ -68,7 +68,7 @@ public struct Survey: Codable {
     }
     
     /// Memberwise initializer
-    public init(title: String, description: String, researcher: Researcher, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem], color: String, reminders: [Reminder] = []) {
+    public init(title: String, description: String, researcher: Researcher? = nil, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem], color: String, reminders: [Reminder] = []) {
         self.title = title
         self.description = description
         self.researcher = researcher
