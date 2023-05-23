@@ -13,9 +13,8 @@ import Combine
 
 struct LocationPickerView: View {
     
-    @ObservedObject var viewModel: ViewModel
-    
-    @EnvironmentObject var surveyViewModel: TakeSurveyScreen.ViewModel
+    @StateObject var viewModel: ViewModel
+    @EnvironmentObject var surveyViewModel: SurveyView.ViewModel
     
     var body: some View {
         VStack {
@@ -55,9 +54,9 @@ struct LocationPickerView: View {
     
     class ViewModel: NSObject, CLLocationManagerDelegate, ObservableObject {
         // The currently displayed survey question
-        private var itemToRender: LocationPickerSurveyItem
+        private var itemToRender: LocationPickerItem
         // Reference to the environment object, the survey view model
-        private var surveyViewModel: TakeSurveyScreen.ViewModel
+        private var surveyViewModel: SurveyView.ViewModel
         // Location manager to access the user's location
         private let manager: CLLocationManager
         
@@ -76,7 +75,7 @@ struct LocationPickerView: View {
             return surveyViewModel.surveyColor
         }
         
-        init(itemToRender: LocationPickerSurveyItem, surveyViewModel: TakeSurveyScreen.ViewModel) {
+        init(itemToRender: LocationPickerItem, surveyViewModel: SurveyView.ViewModel) {
             self.itemToRender = itemToRender
             self.surveyViewModel = surveyViewModel
             self.manager = CLLocationManager()
@@ -93,8 +92,14 @@ struct LocationPickerView: View {
             guard let currentLocation = lastKnownLocation else {
                 return
             }
-            surveyViewModel.currentItemResponse?.responseLocationPickerLatitude = currentLocation.coordinate.latitude
-            surveyViewModel.currentItemResponse?.responseLocationPickerLongitude = currentLocation.coordinate.longitude
+            
+            itemToRender.currentResponse = [
+                CoordinateType.longitude: currentLocation.coordinate.longitude,
+                CoordinateType.latitude: currentLocation.coordinate.latitude
+            ]
+
+            self.objectWillChange.send()
+            self.surveyViewModel.objectWillChange.send()
             
             hasSharedLocation = true
         }

@@ -1,8 +1,8 @@
 //
-//  ContinousOrdinalScaleView.swift
+//  SliderItemView.swift
 //  COFFEE
 //
-//  Created by Victor Prüfer on 22.02.21.
+//  Created by Victor Prüfer on 06.05.21.
 //
 
 #if !os(macOS)
@@ -10,26 +10,30 @@
 import SwiftUI
 import Sliders
 
-struct ContinousOrdinalScaleView: View {
+struct SliderItemView: View {
     
     @ObservedObject var viewModel: ViewModel
-    
-    @EnvironmentObject var surveyViewModel: TakeSurveyScreen.ViewModel
+    @EnvironmentObject var surveyViewModel: SurveyView.ViewModel
     
     var body: some View {
         VStack(alignment: .center) {
-            Text(viewModel.numberFormatter.string(for: viewModel.currentSliderValue) ?? "Invalid input")
-                .font(.title)
-                .padding(4)
+            if (viewModel.itemToRender.showSliderValue) {
+                Text(viewModel.numberFormatter.string(for: viewModel.itemToRender.currentResponse) ?? "Invalid input")
+                    .font(.callout)
+                    .padding(4)
+            }
             Text(viewModel.nearestStep?.label ?? "No label")
-                .font(.callout)
+                .font(.title)
                 .foregroundColor(.secondary)
                 .padding(8)
                 .background(Color(.systemGray5))
                 .cornerRadius(4)
                 .padding(4)
             
-            ValueSlider(value: $viewModel.currentSliderValue, in: viewModel.scaleRange)
+            ValueSlider(value: $viewModel.itemToRender.currentResponse, in: viewModel.scaleRange, step: viewModel.itemToRender.isContinuous ? 0.01 : 1)
+                .onChange(of: viewModel.itemToRender.currentResponse, perform: { value in
+                    surveyViewModel.objectWillChange.send()
+                })
                 .valueSliderStyle(
                     HorizontalValueSliderStyle(
                         track: LinearGradient(
@@ -45,29 +49,25 @@ struct ContinousOrdinalScaleView: View {
             Spacer()
         }
     }
+}
+
+extension SliderItemView {
     
     class ViewModel: ObservableObject {
         // The currently displayed survey question
-        private var itemToRender: OrdinalScaleSurveyItem
+        @Published var itemToRender: SliderItem
         // Reference to the environment object, the survey view model
-        private var surveyViewModel: TakeSurveyScreen.ViewModel
-        
+        private var surveyViewModel: SurveyView.ViewModel
+
         var numberFormatter: NumberFormatter = {
             let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 2
             return numberFormatter
         }()
         
-        // Binding to the slider, defining the current value in range 0 to 1
-        @Published var currentSliderValue: Double = 0 {
-            didSet {
-                surveyViewModel.currentItemResponse?.responseOrdinalScale = currentSliderValue
-            }
-        }
-        
         // Compute the ordinal scale steps for this question
-        var steps: [OrdinalScaleStep] {
-            return itemToRender.ordinalScaleSteps.reversed()
+        var steps: [SliderItem.Step] {
+            return itemToRender.steps.sorted(by: { $0.value < $1.value })
         }
         
         // The value range of the scale (from min to max)
@@ -77,33 +77,19 @@ struct ContinousOrdinalScaleView: View {
         
         // Compute the colors for the slider gradient
         var sliderGradientColors: [Color] {
-            return steps.map({ Color(UIColor(hexString: $0.color)) })
+            return itemToRender.isColored ? steps.compactMap({ $0.color }) : [Color(.systemGray2)]
         }
         
         // The step that the current slider position is nearest to
-        var nearestStep: OrdinalScaleStep? {
-            return steps.map({ (difference: currentSliderValue - $0.value, step: $0) }).min { (a, b) -> Bool in
+        var nearestStep: SliderItem.Step? {
+            return steps.map({ (difference: itemToRender.currentResponse - $0.value, step: $0) }).min { (a, b) -> Bool in
                 return abs(a.difference) < abs(b.difference)
             }?.step
         }
         
-        init(itemToRender: OrdinalScaleSurveyItem, surveyViewModel: TakeSurveyScreen.ViewModel) {
+        init(itemToRender: SliderItem, surveyViewModel: SurveyView.ViewModel) {
             self.itemToRender = itemToRender
             self.surveyViewModel = surveyViewModel
-        }
-        
-        // User tapped on one item
-        func selectStep(stepIndex: Int) {
-            if surveyViewModel.currentItemResponse?.responseOrdinalScale == steps[stepIndex].value {
-                // If the new selection is already selected, toggle it
-                surveyViewModel.currentItemResponse?.responseOrdinalScale = nil
-            } else {
-                // Otherwise, update the item response to reflect the current selection
-                surveyViewModel.currentItemResponse?.responseOrdinalScale = steps[stepIndex].value
-            }
-            // Notify the view that changes occurred
-            objectWillChange.send()
-            surveyViewModel.objectWillChange.send()
         }
     }
 }

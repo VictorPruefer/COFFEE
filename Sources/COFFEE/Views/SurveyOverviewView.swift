@@ -1,5 +1,5 @@
 //
-//  SurveyOverviewScreen.swift
+//  SurveyOverviewView.swift
 //  COFFEE
 //
 //  Created by Victor Prüfer on 21.02.21.
@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// A screen that shows details of a given survey and allows the user to start it.
-public struct SurveyOverviewScreen: View {
+public struct SurveyOverviewView: View {
     
     /// The survey to display
     public var survey: Survey
@@ -41,7 +41,7 @@ public struct SurveyOverviewScreen: View {
             // Stack for upper part (title + info scrollview)
             VStack(alignment: .leading, spacing: 12) {
                 // Styled title bar
-                Text(survey.title)
+                Text(survey.title ?? "Survey")
                     .font(.title2)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
@@ -51,7 +51,7 @@ public struct SurveyOverviewScreen: View {
                     .padding(.top, 90)
                     .padding(.bottom, 8)
                     .padding(.horizontal)
-                    .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor.init(hexString: survey.color).lighter()), Color(UIColor.init(hexString: survey.color).darker(by: 10))]), startPoint: UnitPoint(x: 0.5, y: 0), endPoint: UnitPoint(x: 0.75, y: 1)))
+                    .background(LinearGradient(gradient: Gradient(colors: [survey.color.lighter(), survey.color.darker(by: 0.1)]), startPoint: UnitPoint(x: 0.5, y: 0), endPoint: UnitPoint(x: 0.75, y: 1)))
 
                 // Scrollview with information about survey
                 ScrollView {
@@ -73,22 +73,18 @@ public struct SurveyOverviewScreen: View {
                         }
                         
                         // Timespan of the survey
-                        HStack(alignment: .top) {
-                            Image(systemName: "calendar")
-                                .padding(.vertical, 3)
-                                .frame(width: 30)
-                            VStack(alignment: .leading, spacing: 4, content: {
-                                Text("Starts on \(dateFormatter.string(from: survey.startDate))")
-                                Text("Ends on \(dateFormatter.string(from: survey.endDate))")
-                            })
-                        }.padding(.horizontal)
-                        
-                        // Number of times you can submit to this survey
-                        HStack {
-                            Image(systemName: "list.number")
-                                .frame(width: 30)
-                            Text(survey.allowsMultipleSubmissions ? "You can submit multiple times" : "You can submit only once")
-                        }.padding(.horizontal)
+                        if let startDate = survey.startDate,
+                           let endDate = survey.endDate {
+                            HStack(alignment: .top) {
+                                Image(systemName: "calendar")
+                                    .padding(.vertical, 3)
+                                    .frame(width: 30)
+                                VStack(alignment: .leading, spacing: 4, content: {
+                                    Text("Starts on \(dateFormatter.string(from: startDate))")
+                                    Text("Ends on \(dateFormatter.string(from: endDate))")
+                                })
+                            }.padding(.horizontal)
+                        }
                         
                         // Description headline
                         Text("Description".uppercased())
@@ -97,11 +93,11 @@ public struct SurveyOverviewScreen: View {
                             .padding([.horizontal, .top])
                         
                         // Description of the survey if available
-                        Text(survey.description)
+                        Text(survey.description ?? "No description")
                             .padding(.horizontal)
                         
                         // Reminders section
-                        if !survey.reminders.isEmpty {
+                        if let reminders = survey.reminders, !reminders.isEmpty {
                             Text("Reminders".uppercased())
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -109,9 +105,9 @@ public struct SurveyOverviewScreen: View {
                             
                             // When to take this survey / reminders for this survey
                             VStack(alignment: .leading, spacing: 8, content: {
-                                ForEach(survey.reminders.indices, id: \.self) { index in
+                                ForEach(reminders.indices, id: \.self) { index in
                                     Toggle(isOn: $isOn, label: {
-                                        switch survey.reminders[index].type {
+                                        switch reminders[index].type {
                                             case .dateTime:
                                                 Image(systemName: "calendar")
                                             case .interval:
@@ -119,7 +115,7 @@ public struct SurveyOverviewScreen: View {
                                             case .locationChange:
                                                 Image(systemName: "location")
                                         }
-                                        Text(survey.reminders[index].description)
+                                        Text(reminders[index].description)
                                     })
                                     .padding(.vertical, 8)
                                     .padding(.horizontal, 12)
@@ -137,9 +133,9 @@ public struct SurveyOverviewScreen: View {
             Spacer()
             
             // Lower part: button to start the survey in case the survey is valid
-            if let takeSurveyViewModel = TakeSurveyScreen.ViewModel(survey: survey, completionHandler: completionHandler, showSurvey: $showSurvey) {
+            if let takeSurveyViewModel = SurveyView.ViewModel(survey: survey, completionHandler: completionHandler, showSurvey: $showSurvey) {
                 NavigationLink(
-                    destination: TakeSurveyScreen(viewModel: takeSurveyViewModel),
+                    destination: SurveyView(viewModel: takeSurveyViewModel),
                     isActive: $showSurvey,
                     label: {
                         HStack() {
@@ -151,7 +147,7 @@ public struct SurveyOverviewScreen: View {
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding(.vertical, 10)
-                        .background(Color(UIColor.init(hexString: survey.color)))
+                        .background(survey.color)
                         .cornerRadius(8)
                         .padding()
                     })

@@ -6,17 +6,23 @@
 //
 
 import Foundation
+import SwiftUI
 
 public struct Survey: Codable {
-    public let title: String
-    public let description: String
+    /// Survey title that is shown in the overview screen
+    public var title: String?
+    /// Description of the survey that is shown in the overview screen
+    public var description: String?
+    /// The creator of the survey, shown in the overview screen
     public var researcher: Researcher?
-    public let allowsMultipleSubmissions: Bool
-    public let startDate: Date
-    public let endDate: Date
+    /// Time frame of the survey, shown in the overview screen
+    public var startDate: Date?
+    public var endDate: Date?
+    /// The survey items, each item reflects one question
     public var items: [SurveyItem] = []
-    public let color: String
-    public let reminders: [Reminder]
+    /// The brand color of the survey, which is used for e.g. the buttons
+    public var color: Color
+    public var reminders: [Reminder]?
     
     /// The coding keys for survey
     enum CodingKeys: String, CodingKey {
@@ -44,40 +50,30 @@ public struct Survey: Codable {
         try container.encode(title, forKey: .title)
         try container.encode(description, forKey: .description)
         try container.encode(researcher, forKey: .researcher)
-        try container.encode(allowsMultipleSubmissions, forKey: .allowsMultipleSubmissions)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
-        try container.encode(color, forKey: .color)
+        try container.encode(color.hexString, forKey: .color)
         try container.encode(reminders, forKey: .reminders)
 
         // Encode the items array (needs special treatment as they need to be assigned manually)
         var itemsContainer = container.nestedUnkeyedContainer(forKey: .items)
         for anItem in items {
-            if let ordinalScaleItem = anItem as? OrdinalScaleSurveyItem {
-                try itemsContainer.encode(ordinalScaleItem)
-            } else if let nominalScaleItem = anItem as? NominalScaleSurveyItem {
-                try itemsContainer.encode(nominalScaleItem)
-            } else if let multipleChoiceItem = anItem as? MultipleChoiceSurveyItem {
+            if let sliderItem = anItem as? SliderItem {
+                try itemsContainer.encode(sliderItem)
+            } else if let multipleChoiceItem = anItem as? MultipleChoiceItem {
                 try itemsContainer.encode(multipleChoiceItem)
-            } else if let locationPickerItem = anItem as? LocationPickerSurveyItem {
+            } else if let locationPickerItem = anItem as? LocationPickerItem {
                 try itemsContainer.encode(locationPickerItem)
-            } else if let textInputItem = anItem as? TextInputSurveyItem {
+            } else if let textInputItem = anItem as? TextItem {
                 try itemsContainer.encode(textInputItem)
             }
         }
     }
     
     /// Memberwise initializer
-    public init(title: String, description: String, researcher: Researcher? = nil, allowsMultipleSubmissions: Bool, startDate: Date, endDate: Date, items: [SurveyItem], color: String, reminders: [Reminder] = []) {
-        self.title = title
-        self.description = description
-        self.researcher = researcher
-        self.allowsMultipleSubmissions = allowsMultipleSubmissions
-        self.startDate = startDate
-        self.endDate = endDate
+    public init(items: [SurveyItem], color: Color = Color(hexString: "#8f4068")) {
         self.items = items
         self.color = color
-        self.reminders = reminders
     }
     
     /// Creates a new instance of survey from a decoder
@@ -85,16 +81,19 @@ public struct Survey: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         // Decode all regular values
-        title = try container.decode(String.self, forKey: .title)
-        description = try container.decode(String.self, forKey: .description)
-        researcher = try container.decode(Researcher.self, forKey: .researcher)
-        allowsMultipleSubmissions = try container.decode(Bool.self, forKey: .allowsMultipleSubmissions)
-        startDate = try container.decode(Date.self, forKey: .startDate)
-        endDate = try container.decode(Date.self, forKey: .endDate)
-        color = try container.decode(String.self, forKey: .color)
-        reminders = try container.decode([Reminder].self, forKey: .reminders)
+        title = try? container.decode(String.self, forKey: .title)
+        description = try? container.decode(String.self, forKey: .description)
+        researcher = try? container.decode(Researcher.self, forKey: .researcher)
+        startDate = try? container.decode(Date.self, forKey: .startDate)
+        endDate = try? container.decode(Date.self, forKey: .endDate)
+        if let colorHex = try? container.decode(String.self, forKey: .color) {
+            color = Color(hexString: colorHex)
+        } else {
+            color = Color(hexString: "#8f4068")
+        }
+        reminders = try? container.decode([Reminder].self, forKey: .reminders)
         
-        // Decode the items array (needs special treatment as items need to be manually)
+        // Decode the items array (needs special treatment as items need to be assigned manually)
         // We create a copy as calling decode() is necessary to get the type but increases the decoder's current index
         var itemsArrayForType = try container.nestedUnkeyedContainer(forKey: CodingKeys.items)
         var itemsArray = itemsArrayForType
@@ -103,16 +102,16 @@ public struct Survey: Codable {
             let itemType = try item.decode(SurveyItemType.self, forKey: SurveyItemTypeKey.type)
 
             switch itemType {
-                case .ordinalScale:
-                    items.append(try itemsArray.decode(OrdinalScaleSurveyItem.self))
-                case .nominalScale:
-                    items.append(try itemsArray.decode(NominalScaleSurveyItem.self))
+                case .slider:
+                    items.append(try itemsArray.decode(SliderItem.self))
                 case .multipleChoice:
-                    items.append(try itemsArray.decode(MultipleChoiceSurveyItem.self))
-                case .textInput:
-                    items.append(try itemsArray.decode(TextInputSurveyItem.self))
+                    items.append(try itemsArray.decode(MultipleChoiceItem.self))
+                case .text:
+                    items.append(try itemsArray.decode(TextItem.self))
                 case .locationPicker:
-                    items.append(try itemsArray.decode(LocationPickerSurveyItem.self))
+                    items.append(try itemsArray.decode(LocationPickerItem.self))
+                case .number:
+                    items.append(try itemsArray.decode(NumberItem.self))
             }
         }
     }

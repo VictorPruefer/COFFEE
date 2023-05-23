@@ -1,5 +1,5 @@
 //
-//  TakeSurveyScreen.swift
+//  SurveyView.swift
 //  COFFEE
 //
 //  Created by Victor Prüfer on 22.02.21.
@@ -10,16 +10,20 @@ import SwiftUI
 #if !os(macOS)
 
 /// A screen presenting a given survey
-struct TakeSurveyScreen: View {
+public struct SurveyView: View {
     
     // View model for this survey session, also provided to the subviews as environment object
-    @StateObject var viewModel: ViewModel
+    @ObservedObject public var viewModel: ViewModel
+    
+    public init(viewModel: SurveyView.ViewModel) {
+        self.viewModel = viewModel
+    }
             
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             // Progress indicator
-            ProgressView(value: Double(viewModel.currentSurveyItemIndex + 1), total: Double(viewModel.numberOfSurveyItems), label: {
-                Text("\(viewModel.currentSurveyItemIndex) of \(viewModel.numberOfSurveyItems) questions completed")
+            ProgressView(value: Double(viewModel.currentSurveyItemIndex + 1), total: Double(viewModel.survey.items.count), label: {
+                Text("Question \(viewModel.currentSurveyItemIndex + 1) of \(viewModel.survey.items.count)")
                     .font(.caption)
                     .foregroundColor(.secondary)
             })
@@ -27,8 +31,8 @@ struct TakeSurveyScreen: View {
             .padding()
             
             // The rendered item view, depending on the current survey item's type
-            SurveyItemView(currentItem: viewModel.currentSurveyItem)
-            
+            SurveyItemView().environmentObject(viewModel)
+                        
             // Button to go to next question
             Button(action: { viewModel.showNextSurveyItem() }, label: {
                 HStack() {
@@ -48,29 +52,22 @@ struct TakeSurveyScreen: View {
             }).disabled(!viewModel.isContinueAllowed)
         }
         .navigationBarTitle("Question \(viewModel.currentSurveyItemIndex + 1)", displayMode: .inline)
-        .environmentObject(viewModel)
     }
 }
 
-extension TakeSurveyScreen {
+public extension SurveyView {
     
     class ViewModel: ObservableObject {
         // The survey to take
-        private let survey: Survey
-        // The responses to the survey items
-        private var itemResponses: [ItemResponse] = []
+        let survey: Survey
         // Completion handler that is called once the response is submitted
         private var completionHandler: ((Submission) -> ())?
         
         // Index of the currently displayed survey item
         @Published private(set) var currentSurveyItemIndex: Int = 0
-        // Percentage of completed questions for progress indicator
-        @Published private(set) var numberOfSurveyItems: Int
         
         // The currently displayed survey item
         @Published var currentSurveyItem: SurveyItem
-        // The response item for the current question
-        @Published var currentItemResponse: ItemResponse?
         // Whether there is a next survey item
         @Published var isNextSurveyItemAvailable: Bool
         
@@ -80,35 +77,36 @@ extension TakeSurveyScreen {
         // Compute the background color for the continue button
         var nextButtonColor: Color {
             if isNextSurveyItemAvailable {
-                return Color(UIColor.init(hexString: survey.color)).opacity(isContinueAllowed ? 1.0 : 0.6)
+                return survey.color.opacity(isContinueAllowed ? 1.0 : 0.6)
             } else {
-                return (Color.green.opacity(isContinueAllowed ? 1.0 : 0.6))
+                return Color.green.opacity(isContinueAllowed ? 1.0 : 0.6)
             }
         }
         
         // Return the color for the progress indicator
         var surveyColor: Color {
-            return Color(UIColor.init(hexString: survey.color))
+            return survey.color
         }
         
         // Compute whether continueing is allowed
         var isContinueAllowed: Bool {
-            return currentSurveyItem.isOptional || currentItemResponse?.isValidInput == true
+            return !currentSurveyItem.isMandatory || currentSurveyItem.isResponseValid == true
         }
         
-        init?(survey: Survey, completionHandler: ((Submission) -> ())?, showSurvey: Binding<Bool>) {
-            // Make sure survey is not empty
-            guard let firstItem = survey.items.first else {
-                return nil
-            }
+        /// Default initializer for the `SurveyView`'s view model
+        /// - Parameters:
+        ///   - survey: The survey to display
+        ///   - completionHandler: A function that is called when the survey is completed
+        ///   - showSurvey: A binding to a boolean value that defines whether the survey view is shown or not
+        public init(survey: Survey, completionHandler: ((Submission) -> ())?, showSurvey: Binding<Bool>) {
+            // Ensure the survey is not empty
+            assert(!survey.items.isEmpty, "Survey is empty. The survey should have at least one item.")
+
             self.survey = survey
             self.completionHandler = completionHandler
-            self.numberOfSurveyItems = survey.items.count
-            self.currentSurveyItem = firstItem
+            self.currentSurveyItem = survey.items.first!
             self.isNextSurveyItemAvailable = survey.items.count > 1
             self._showSurvey = showSurvey
-            
-            prepareItemResponse()
         }
         
         // This will open the next survey item if available
@@ -116,17 +114,14 @@ extension TakeSurveyScreen {
             guard isContinueAllowed else {
                 return
             }
-            // Submit item response if input is valid
-            if let currentItemResponse = currentItemResponse, currentItemResponse.isValidInput {
-                itemResponses.append(currentItemResponse)
-            }
-                        
+           
             // Check if there is an next item to show
             guard isNextSurveyItemAvailable else {
                 // No more items, survey response is complete
                 
                 // Create submission and return it trough completion handler
-                let submission = Submission(submissionDate: Date(), responses: itemResponses)
+                let responseObjects = survey.items.compactMap({ $0.generateResponseObject() })
+                let submission = Submission(submissionDate: Date(), responses: responseObjects)
                 completionHandler?(submission)
                 
                 // Go back to overview screen
@@ -139,21 +134,6 @@ extension TakeSurveyScreen {
             currentSurveyItemIndex += 1
             currentSurveyItem = survey.items[currentSurveyItemIndex]
             isNextSurveyItemAvailable = (survey.items.count - 1) > currentSurveyItemIndex
-            
-            prepareItemResponse()
-        }
-        
-        // Setup the initial item response for a new survey item
-        func prepareItemResponse() {
-            currentItemResponse = ItemResponse(type: currentSurveyItem.type, surveyItemID: currentSurveyItem.identifier)
-            if currentSurveyItem.type == .multipleChoice {
-                currentItemResponse?.responseMultipleChoice = [Int]()
-            }
-            if currentSurveyItem.type == .ordinalScale,
-               let ordinalScaleItem = currentSurveyItem as? OrdinalScaleSurveyItem,
-               ordinalScaleItem.isScaleContinous == true {
-                currentItemResponse?.responseOrdinalScale = 0
-            }
         }
     }
 }
